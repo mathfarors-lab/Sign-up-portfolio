@@ -19,6 +19,41 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body class="bg-[#1a1a1a] text-white overflow-x-hidden">
+    <!-- Full Screen Loader -->
+    <div
+      id="main-loader"
+      class="fixed inset-0 z-[100] bg-[#092743] flex flex-col items-center justify-center transition-opacity duration-500"
+    >
+      <!-- រូបផ្ការំដួលវិល (ប្អូនអាចប្តូរដាក់ Logo ប្អូនក៏បាន) -->
+      <div class="relative w-20 h-20 mb-4">
+        <div
+          class="absolute inset-0 border-4 border-[#cb9b51]/20 rounded-full"
+        ></div>
+        <div
+          class="absolute inset-0 border-4 border-t-[#cb9b51] rounded-full animate-spin"
+        ></div>
+      </div>
+      <p
+        class="gold-text font-sans text-xs tracking-[0.3em] uppercase animate-pulse"
+      >
+        Loading Profile...
+      </p>
+    </div>
+
+    <!-- ដាក់ Style លាក់ Content ដើមសិន ដើម្បីកុំឱ្យឃើញ Template ទទេ -->
+    <style>
+      #root {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+      }
+      .content-ready #root {
+        opacity: 1;
+      }
+      .content-ready #main-loader {
+        opacity: 0;
+        pointer-events: none;
+      }
+    </style>
     <!-- ======================= -->
     <!-- MAIN INDEX VIEW -->
     <!-- ======================= -->
@@ -717,47 +752,6 @@
             </button>
           </div>
         </div>
-        <div class="relative z-10 px-6 mb-6 flex justify-center">
-          <button
-            id="qr-btn"
-            class="flex flex-col items-center gap-2 group cursor-pointer hover:scale-110 transition-transform"
-          >
-            <div
-              class="p-3 rounded-2xl bg-white/5 border border-[#cb9b51]/30 group-hover:border-[#cb9b51] group-hover:shadow-[0_0_15px_rgba(203,155,81,0.2)] transition-all"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="w-8 h-8 text-[#cb9b51]"
-              >
-                <rect width="5" height="5" x="3" y="3" rx="1"></rect>
-                <rect width="5" height="5" x="16" y="3" rx="1"></rect>
-                <rect width="5" height="5" x="3" y="16" rx="1"></rect>
-                <path d="M21 16h-3a2 2 0 0 0-2 2v3"></path>
-                <path d="M21 21v.01"></path>
-                <path d="M12 7v3a2 2 0 0 1-2 2H7"></path>
-                <path d="M3 12h.01"></path>
-                <path d="M12 3h.01"></path>
-                <path d="M12 16v.01"></path>
-                <path d="M16 12h1"></path>
-                <path d="M21 12v.01"></path>
-                <path d="M12 21v-1"></path>
-              </svg>
-            </div>
-            <span
-              class="text-[10px] font-bold gold-text uppercase tracking-widest opacity-70"
-            >
-              Scan to Connect
-            </span>
-          </button>
-        </div>
 
         <!-- Footer -->
         <div
@@ -765,25 +759,48 @@
         >
           <div class="flex items-center gap-4">
             <div class="h-[1px] w-12 gold-gradient opacity-50"></div>
-            <svg
-              class="w-6 h-6 text-[#cb9b51]"
-              viewBox="0 0 100 100"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M50 10C55 30 75 30 75 50C75 70 55 70 50 90C45 70 25 70 25 50C25 30 45 30 50 10Z"
-                stroke="currentColor"
-                stroke-width="0.5"
-                stroke-opacity="0.2"
-              ></path>
-              <path
-                d="M50 25C53 40 68 40 68 50C68 60 53 60 50 75C47 60 32 60 32 50C32 40 47 40 50 25Z"
-                stroke="currentColor"
-                stroke-width="0.5"
-                stroke-opacity="0.2"
-              ></path>
-            </svg>
+            <div class="relative z-10 px-6 mb-6 flex justify-center">
+              <button
+                id="qr-btn"
+                class="flex flex-col items-center gap-2 group cursor-pointer hover:scale-110 transition-transform"
+              >
+                <div
+                  class="p-3 rounded-2xl bg-white/5 border border-[#cb9b51]/30 group-hover:border-[#cb9b51] group-hover:shadow-[0_0_15px_rgba(203,155,81,0.2)] transition-all"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="w-8 h-8 text-[#cb9b51]"
+                  >
+                    <rect width="5" height="5" x="3" y="3" rx="1"></rect>
+                    <rect width="5" height="5" x="16" y="3" rx="1"></rect>
+                    <rect width="5" height="5" x="3" y="16" rx="1"></rect>
+                    <path d="M21 16h-3a2 2 0 0 0-2 2v3"></path>
+                    <path d="M21 21v.01"></path>
+                    <path d="M12 7v3a2 2 0 0 1-2 2H7"></path>
+                    <path d="M3 12h.01"></path>
+                    <path d="M12 3h.01"></path>
+                    <path d="M12 16v.01"></path>
+                    <path d="M16 12h1"></path>
+                    <path d="M21 12v.01"></path>
+                    <path d="M12 21v-1"></path>
+                  </svg>
+                </div>
+                <span
+                  class="text-[10px] font-bold gold-text uppercase tracking-widest opacity-70"
+                >
+                  Scan to Connect
+                </span>
+              </button>
+            </div>
+
             <div class="h-[1px] w-12 gold-gradient opacity-50"></div>
           </div>
           <p
@@ -1139,32 +1156,33 @@
     <!-- JAVASCRIPT LOGIC -->
     <!-- ======================= -->
     <script>
+      /**
+       * RUMDUOL EDITION - DYNAMIC PORTFOLIO SCRIPT
+       * Credit by Farors
+       */
+
       document.addEventListener("DOMContentLoaded", () => {
-        const sheetURL =
-          "https://docs.google.com/spreadsheets/d/e/2PACX-1vT5EqCFA0-fKAtQgN2kWBwsAe7poKKJsH1NkVsHuVXsbouXtwZVGAdsbOkPU9qhmtyGMMJR-z0mDTe1/pub?gid=0&single=true&output=csv";
-        const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get("id");
-
-        // if (!userId) {
-        //   alert("សូមប្រើប្រាស់ Link ដែលមាន ID (ឧទាហរណ៍: ?id=1)");
-        //   return;
-        // }
-
-        // មុខងារជំនួយសម្រាប់លាក់/បង្ហាញប៊ូតុង
-        const updateUI = (id, value, prefix = "", isImage = false) => {
-          const el = document.getElementById(id);
-          if (!el) return;
-          const cleanValue = value ? value.trim() : "";
-          if (cleanValue !== "" && cleanValue !== "undefined") {
-            if (isImage) el.src = cleanValue;
-            else el.href = prefix + cleanValue;
-            el.style.display = id.includes("link-") ? "flex" : "block";
-          } else {
-            el.style.display = "none";
-          }
+        // --- ១. ការកំណត់ (CONFIGURATION) ---
+        const CONFIG = {
+          sheetURL:
+            "https://docs.google.com/spreadsheets/d/e/2PACX-1vT5EqCFA0-fKAtQgN2kWBwsAe7poKKJsH1NkVsHuVXsbouXtwZVGAdsbOkPU9qhmtyGMMJR-z0mDTe1/pub?gid=0&single=true&output=csv",
+          qrApi:
+            "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=",
+          defaultProfile: "./image/profile.png",
+          loaderDelay: 600, // រយៈពេលបង្ហាញ Loader (milliseconds)
         };
 
-        // មុខងារ បើក/បិទ Modal
+        // ទាញយក ID ពី URL
+        const userId = new URLSearchParams(window.location.search).get("id");
+
+        if (!userId) {
+          showError("ID Required! Please use ?id=1");
+          return;
+        }
+
+        // --- ២. មុខងារជំនួយ (UTILITIES) ---
+
+        // មុខងារ បង្ហាញ/លាក់ Modal
         const toggleModal = (id, show) => {
           const el = document.getElementById(id);
           if (!el) return;
@@ -1172,18 +1190,12 @@
             el.classList.replace("modal-hidden", "modal-visible");
             if (id === "modal-qr")
               setTimeout(
-                () =>
-                  el
-                    .querySelector("div")
-                    ?.classList.replace("scale-95", "scale-100"),
+                () => el.querySelector("div")?.classList.add("scale-100"),
                 10,
               );
           } else {
             if (id === "modal-qr")
-              el.querySelector("div")?.classList.replace(
-                "scale-100",
-                "scale-95",
-              );
+              el.querySelector("div")?.classList.remove("scale-100");
             setTimeout(
               () => el.classList.replace("modal-visible", "modal-hidden"),
               150,
@@ -1191,9 +1203,44 @@
           }
         };
 
-        fetch(sheetURL)
+        // មុខងារ លាក់ Loader និងបង្ហាញ Content
+        const finalizeUI = () => {
+          setTimeout(() => {
+            document.body.classList.add("content-ready");
+            setTimeout(
+              () => document.getElementById("main-loader")?.remove(),
+              1000,
+            );
+          }, CONFIG.loaderDelay);
+        };
+
+        // មុខងារ Update ប៊ូតុង និងលាក់ស្វ័យប្រវត្តិបើគ្មានទិន្នន័យ
+        const bindData = (id, value, prefix = "", isImage = false) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          const val = value?.trim();
+
+          if (val && val !== "" && val !== "undefined") {
+            if (isImage) el.src = val;
+            else el.href = prefix + val;
+            el.style.display = id.includes("link-") ? "flex" : "block";
+          } else {
+            el.style.display = "none";
+          }
+        };
+
+        function showError(msg) {
+          console.error(msg);
+          const loaderText = document.querySelector("#main-loader p");
+          if (loaderText) loaderText.innerText = msg;
+        }
+
+        // --- ៣. ការទាញទិន្នន័យ (DATA FETCHING) ---
+
+        fetch(CONFIG.sheetURL)
           .then((res) => res.text())
           .then((csvText) => {
+            // បកប្រែ CSV ទៅជា Array of Objects
             const rows = csvText
               .split(/\r?\n/)
               .map((row) =>
@@ -1208,80 +1255,114 @@
               return obj;
             });
 
+            // ស្វែងរកអតិថិជន
             const user = data.find((u) => u.id === userId);
-
-            if (user) {
-              // បញ្ចូលព័ត៌មានមូលដ្ឋាន
-              document.getElementById("user-name").innerText = user.name || "";
-              document.getElementById("user-title").innerText =
-                user.title || "";
-              updateUI("user-img", user.profile_img, "", true);
-
-              const logo = document.getElementById("company-logo");
-              if (logo) {
-                logo.src = user.logo_img || "";
-                logo.parentElement.style.display = user.logo_img
-                  ? "block"
-                  : "none";
-              }
-
-              // បញ្ចូលប៊ូតុង Social (លាក់ស្វ័យប្រវត្តិបើទទេ)
-              updateUI("link-phone", user.phone, "tel:");
-              updateUI("link-fb", user.facebook);
-              updateUI("link-tg", user.telegram);
-              updateUI("link-wa", user.whatsapp, "https://wa.me/");
-              updateUI("link-email", user.email, "mailto:");
-              updateUI("link-tiktok", user.tiktok);
-              updateUI("link-web", user.website);
-              updateUI("link-linkin", user.linkedin);
-
-              // បង្កើត QR Code តាម Link បច្ចុប្បន្ន
-              const currentUrl = window.location.href;
-              document.getElementById("qr-image").src =
-                `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(currentUrl)}`;
-              document.getElementById("qr-link-text").innerText = currentUrl;
-
-              // Save Contact
-              document.getElementById("save-contact-btn").onclick = () => {
-                const vcf = `BEGIN:VCARD\nVERSION:3.0\nFN:${user.name}\nTITLE:${user.title}\nTEL;TYPE=CELL:${user.phone}\nURL:${currentUrl}\nEND:VCARD`;
-                const blob = new Blob([vcf], { type: "text/vcard" });
-                const a = document.createElement("a");
-                a.href = URL.createObjectURL(blob);
-                a.download = `${user.vcf_first || "Contact"}.vcf`;
-                a.click();
-              };
-
-              // Share Card
-              document.getElementById("nav-share").onclick = async () => {
-                toggleModal("modal-menu", false);
-                if (navigator.share)
-                  await navigator.share({ title: user.name, url: currentUrl });
-                else {
-                  navigator.clipboard.writeText(currentUrl);
-                  alert("Link Copied!");
-                }
-              };
+            if (!user) {
+              showError("User not found!");
+              return;
             }
-          });
 
-        // បញ្ជាប៊ូតុង Modal
-        document.getElementById("menu-btn").onclick = () =>
-          toggleModal("modal-menu", true);
-        document.getElementById("close-menu-btn").onclick = () =>
-          toggleModal("modal-menu", false);
-        document.getElementById("qr-btn").onclick = () =>
-          toggleModal("modal-qr", true);
-        document.getElementById("close-qr-btn").onclick = () =>
-          toggleModal("modal-qr", false);
-        document.getElementById("nav-about").onclick = () => {
-          toggleModal("modal-menu", false);
-          toggleModal("page-about", true);
+            renderUser(user);
+          })
+          .catch((err) => showError("Network Error!"));
+
+        // --- ៤. ការបង្ហាញទិន្នន័យលើអេក្រង់ (RENDERING) ---
+
+        function renderUser(user) {
+          const currentUrl = window.location.href;
+
+          // បញ្ចូលព័ត៌មានអត្ថបទ
+          document.getElementById("user-name").innerText = user.name || "";
+          document.getElementById("user-title").innerText = user.title || "";
+          if (document.getElementById("display-phone")) {
+            document.getElementById("display-phone").innerText =
+              user.phone || "";
+          }
+
+          // បញ្ចូលរូបភាព
+          bindData(
+            "user-img",
+            user.profile_img || CONFIG.defaultProfile,
+            "",
+            true,
+          );
+
+          const logo = document.getElementById("company-logo");
+          if (logo) {
+            logo.src = user.logo_img || "";
+            logo.parentElement.style.display = user.logo_img ? "block" : "none";
+          }
+
+          // បញ្ចូលប៊ូតុងសង្គម (Auto-Hide)
+          bindData("link-phone", user.phone, "tel:");
+          bindData("link-fb", user.facebook);
+          bindData("link-tg", user.telegram);
+          bindData("link-wa", "https://wa.me/" + user.whatsapp);
+          bindData("link-email", "mailto:" + user.email);
+          bindData("link-tiktok", user.tiktok);
+          bindData("link-web", user.website);
+          bindData("link-linkin", user.linkedin);
+
+          // រៀបចំ QR Code
+          const qrImg = document.getElementById("qr-image");
+          const qrText = document.getElementById("qr-link-text");
+          if (qrImg) qrImg.src = CONFIG.qrApi + encodeURIComponent(currentUrl);
+          if (qrText) qrText.innerText = currentUrl;
+
+          // មុខងារ Save Contact
+          document.getElementById("save-contact-btn").onclick = () => {
+            const vcf = `BEGIN:VCARD\nVERSION:3.0\nFN:${user.name}\nTITLE:${user.title}\nTEL;TYPE=CELL:${user.phone}\nURL:${currentUrl}\nEND:VCARD`;
+            const blob = new Blob([vcf], { type: "text/vcard" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = `${user.vcf_first || user.name}.vcf`;
+            a.click();
+          };
+
+          // មុខងារ Share
+          document.getElementById("nav-share").onclick = async () => {
+            toggleModal("modal-menu", false);
+            if (navigator.share) {
+              await navigator.share({ title: user.name, url: currentUrl });
+            } else {
+              navigator.clipboard.writeText(currentUrl);
+              alert("Link Copied!");
+            }
+          };
+
+          // រួចរាល់! លាក់ Loader
+          finalizeUI();
+        }
+
+        // --- ៥. កំណត់សកម្មភាពប៊ូតុង (EVENT LISTENERS) ---
+
+        const actions = {
+          "menu-btn": () => toggleModal("modal-menu", true),
+          "close-menu-btn": () => toggleModal("modal-menu", false),
+          "qr-btn": () => toggleModal("modal-qr", true),
+          "close-qr-btn": () => toggleModal("modal-qr", false),
+          "nav-about": () => {
+            toggleModal("modal-menu", false);
+            toggleModal("page-about", true);
+          },
+          "close-about-btn": () => toggleModal("page-about", false),
+          "nav-home": () => {
+            toggleModal("modal-menu", false);
+            toggleModal("page-about", false);
+          },
         };
-        document.getElementById("close-about-btn").onclick = () =>
-          toggleModal("page-about", false);
-        document.getElementById("modal-qr").onclick = (e) => {
-          if (e.target.id === "modal-qr") toggleModal("modal-qr", false);
-        };
+
+        Object.keys(actions).forEach((id) => {
+          const btn = document.getElementById(id);
+          if (btn) btn.onclick = actions[id];
+        });
+
+        // ចុចក្រៅ Modal QR ដើម្បីបិទ
+        const modalQr = document.getElementById("modal-qr");
+        if (modalQr)
+          modalQr.onclick = (e) => {
+            if (e.target === modalQr) toggleModal("modal-qr", false);
+          };
       });
     </script>
   </body>
