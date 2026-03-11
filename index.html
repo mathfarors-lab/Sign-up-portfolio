@@ -1094,11 +1094,9 @@
     <!-- ======================= -->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        // ១. Link Google Sheets របស់ប្អូន
+        // ១. កំណត់ Link និងទាញ ID ពី URL
         const sheetURL =
           "https://docs.google.com/spreadsheets/d/e/2PACX-1vT5EqCFA0-fKAtQgN2kWBwsAe7poKKJsH1NkVsHuVXsbouXtwZVGAdsbOkPU9qhmtyGMMJR-z0mDTe1/pub?gid=0&single=true&output=csv";
-
-        // ២. ទាញ ID ពី URL (ឧទាហរណ៍: ?id=1)
         const urlParams = new URLSearchParams(window.location.search);
         const userId = urlParams.get("id");
 
@@ -1106,6 +1104,44 @@
           alert("សូមប្រើប្រាស់ Link ដែលមាន ID (ឧទាហរណ៍: index.html?id=1)");
           return;
         }
+
+        // ២. មុខងារជំនួយ (Helper Functions)
+        const showModal = (el) => {
+          if (!el) return;
+          el.classList.remove("modal-hidden");
+          el.classList.add("modal-visible");
+          if (el.id === "modal-qr") {
+            setTimeout(
+              () =>
+                el
+                  .querySelector("div")
+                  ?.classList.replace("scale-95", "scale-100"),
+              10,
+            );
+          }
+        };
+
+        const hideModal = (el) => {
+          if (!el) return;
+          if (el.id === "modal-qr")
+            el.querySelector("div")?.classList.replace("scale-100", "scale-95");
+          setTimeout(
+            () => el.classList.replace("modal-visible", "modal-hidden"),
+            150,
+          );
+        };
+
+        // មុខងារសម្រាប់ Update Link និង "លាក់" ប៊ូតុងដែលទំនេរ
+        const updateLink = (id, value, prefix = "") => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          if (value && value.trim() !== "" && value !== "undefined") {
+            el.href = prefix + value;
+            el.style.display = "flex"; // បង្ហាញប៊ូតុង
+          } else {
+            el.style.display = "none"; // លាក់ប៊ូតុងចោល
+          }
+        };
 
         // ៣. ទាញទិន្នន័យពី Google Sheets
         fetch(sheetURL)
@@ -1123,129 +1159,126 @@
               return obj;
             });
 
-            // ស្វែងរកអតិថិជនតាម ID
             const user = data.find((u) => u.id === userId);
 
             if (user) {
-              // បញ្ចូលព័ត៌មានទៅ HTML
+              // --- បញ្ចូលព័ត៌មានរូបភាព និងអត្ថបទ ---
               if (document.getElementById("user-name"))
-                document.getElementById("user-name").innerText = user.name;
+                document.getElementById("user-name").innerText =
+                  user.name || "";
               if (document.getElementById("user-title"))
-                document.getElementById("user-title").innerText = user.title;
-              if (document.getElementById("user-img"))
-                document.getElementById("user-img").src = user.profile_img;
-              if (document.getElementById("company-logo"))
-                // ប្តូររូបភាព Logo
-                document.getElementById("company-logo").src = user.logo_img;
+                document.getElementById("user-title").innerText =
+                  user.title || "";
 
-              // បញ្ចូល Links ទៅប៊ូតុង
-              const setLink = (id, href) => {
-                const el = document.getElementById(id);
-                if (el) el.href = href;
-              };
-              setLink("link-phone", "tel:" + user.phone);
-              setLink("link-fb", user.facebook);
-              setLink("link-tg", user.telegram);
-              setLink("link-linkin", user.linkedin);
-              setLink("link-wa", "https://wa.me/" + user.whatsapp);
-              setLink("link-email", "mailto:" + user.email);
-              setLink("link-tiktok", user.tiktok);
-              setLink("link-web", user.website);
+              if (document.getElementById("user-img")) {
+                const img = document.getElementById("user-img");
+                img.src = user.profile_img || "./image/profile.png";
+                img.style.display = user.profile_img ? "block" : "none";
+              }
 
-              // មុខងារ Share (Update តាមឈ្មោះអតិថិជន)
+              if (document.getElementById("company-logo")) {
+                const logo = document.getElementById("company-logo");
+                logo.src = user.logo_img || "./image/logo.png";
+                logo.parentElement.style.display = user.logo_img
+                  ? "block"
+                  : "none";
+              }
+
+              // --- បញ្ចូល Links និងឆែកមើលភាពទំនេរ (Auto-Hide) ---
+              updateLink("link-phone", user.phone, "tel:");
+              updateLink("link-fb", user.facebook);
+              updateLink("link-tg", user.telegram);
+              updateLink("link-linkin", user.linkedin);
+              updateLink("link-wa", user.whatsapp, "https://wa.me/");
+              updateLink("link-email", user.email, "mailto:");
+              updateLink("link-tiktok", user.tiktok);
+              updateLink("link-web", user.website);
+
+              // បង្ហាញលេខទូរស័ព្ទលើអេក្រង់ (បើមាន id="display-phone")
+              if (document.getElementById("display-phone")) {
+                document.getElementById("display-phone").innerText =
+                  user.phone || "";
+              }
+
+              // --- បង្កើត QR Code ឌីណាមិកតាម Link បច្ចុប្បន្ន ---
+              const currentUrl = window.location.href;
+              const qrImgEl = document.getElementById("qr-image");
+              const qrTextEl = document.getElementById("qr-link-text");
+              if (qrImgEl)
+                qrImgEl.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(currentUrl)}`;
+              if (qrTextEl) qrTextEl.innerText = currentUrl;
+
+              // --- មុខងារ Share ---
               document.getElementById("nav-share").onclick = async () => {
                 hideModal(document.getElementById("modal-menu"));
-                if (user) {
-                  // ... កូដចាស់ៗរបស់ប្អូន ...
-
-                  // --- ផ្នែកបង្កើត QR Code ឌីណាមិក ---
-                  const currentUrl = window.location.href; // វានឹងទាញយក Link បច្ចុប្បន្ន (រួមទាំង ?id=... ផងដែរ)
-                  const qrImgEl = document.getElementById("qr-image");
-                  const qrTextEl = document.getElementById("qr-link-text");
-
-                  if (qrImgEl) {
-                    // យើងប្រើ API ឥតគិតថ្លៃដើម្បីបង្កើត QR តាម Link បច្ចុប្បន្ន
-                    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(currentUrl)}`;
-                    qrImgEl.src = qrApiUrl;
-                  }
-
-                  if (qrTextEl) {
-                    // បង្ហាញអក្សរ Link នៅខាងក្រោមរូប QR
-                    qrTextEl.innerText = currentUrl;
-                  }
-                }
                 if (navigator.share) {
                   try {
                     await navigator.share({
-                      title: user.name + " - Digital Business Card",
-                      text: "Connect with " + user.name,
-                      url: window.location.href,
+                      title: `${user.name} - Digital Card`,
+                      text: `Connect with ${user.name}`,
+                      url: currentUrl,
                     });
                   } catch (e) {
                     console.log(e);
                   }
                 } else {
-                  alert("Link Copied!");
+                  navigator.clipboard.writeText(currentUrl);
+                  alert("Link Copied to clipboard!");
                 }
               };
 
-              // មុខងារ Save Contact (.vcf)
+              // --- មុខងារ Save Contact (.vcf) ---
               document.getElementById("save-contact-btn").onclick = () => {
-                const vcf = `BEGIN:VCARD\nVERSION:3.0\nN:${user.vcf_last};${user.vcf_first};\nFN:${user.name}\nORG:${user.vcf_org}\nTITLE:${user.title}\nTEL;TYPE=CELL:${user.phone}\nURL:${window.location.href}\nEND:VCARD`;
+                const vcf = `BEGIN:VCARD\nVERSION:3.0\nN:${user.vcf_last || ""};${user.vcf_first || ""};\nFN:${user.name}\nORG:${user.vcf_org || ""}\nTITLE:${user.title}\nTEL;TYPE=CELL:${user.phone}\nURL:${currentUrl}\nEND:VCARD`;
                 const blob = new Blob([vcf], {
                   type: "text/vcard;charset=utf-8",
                 });
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement("a");
                 a.href = url;
-                a.download = `${user.vcf_first}.vcf`;
+                a.download = `${user.vcf_first || "Contact"}.vcf`;
                 a.click();
+                window.URL.revokeObjectURL(url);
               };
             }
-          });
+          })
+          .catch((err) => console.error("Error fetching data:", err));
 
-        // --- មុខងារ Modal (Menu, QR, About) រក្សាទុកដូចដើម ---
-        const showModal = (el) => {
-          el.classList.remove("modal-hidden");
-          el.classList.add("modal-visible");
-          if (el.id === "modal-qr") {
-            setTimeout(
-              () =>
-                el
-                  .querySelector("div")
-                  .classList.replace("scale-95", "scale-100"),
-              10,
-            );
-          }
-        };
-
-        const hideModal = (el) => {
-          if (el.id === "modal-qr")
-            el.querySelector("div").classList.replace("scale-100", "scale-95");
-          setTimeout(
-            () => el.classList.replace("modal-visible", "modal-hidden"),
-            150,
-          );
+        // --- មុខងារ Modal Events (Menu, QR, About) ---
+        const modalIds = {
+          menu: "modal-menu",
+          qr: "modal-qr",
+          about: "page-about",
         };
 
         document.getElementById("menu-btn").onclick = () =>
-          showModal(document.getElementById("modal-menu"));
+          showModal(document.getElementById(modalIds.menu));
         document.getElementById("close-menu-btn").onclick = () =>
-          hideModal(document.getElementById("modal-menu"));
+          hideModal(document.getElementById(modalIds.menu));
+
         document.getElementById("qr-btn").onclick = () =>
-          showModal(document.getElementById("modal-qr"));
+          showModal(document.getElementById(modalIds.qr));
         document.getElementById("close-qr-btn").onclick = () =>
-          hideModal(document.getElementById("modal-qr"));
+          hideModal(document.getElementById(modalIds.qr));
+
         document.getElementById("nav-home").onclick = () => {
-          hideModal(document.getElementById("modal-menu"));
-          hideModal(document.getElementById("page-about"));
+          hideModal(document.getElementById(modalIds.menu));
+          hideModal(document.getElementById(modalIds.about));
         };
+
         document.getElementById("nav-about").onclick = () => {
-          hideModal(document.getElementById("modal-menu"));
-          showModal(document.getElementById("page-about"));
+          hideModal(document.getElementById(modalIds.menu));
+          showModal(document.getElementById(modalIds.about));
         };
+
         document.getElementById("close-about-btn").onclick = () =>
-          hideModal(document.getElementById("page-about"));
+          hideModal(document.getElementById(modalIds.about));
+
+        // ចុចខាងក្រៅ Modal ដើម្បីបិទ (សម្រាប់ QR)
+        document.getElementById(modalIds.qr).onclick = (e) => {
+          if (e.target.id === modalIds.qr)
+            hideModal(document.getElementById(modalIds.qr));
+        };
       });
     </script>
   </body>
