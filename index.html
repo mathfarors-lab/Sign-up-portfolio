@@ -680,25 +680,84 @@
         </div>
 
         <!-- Scan QR Button -->
-        <div class="bg-black p-4 rounded-xl ... relative overflow-hidden">
-          <!-- លុប src ចាស់ចោល រួចដាក់ id="qr-image" -->
-          <img
-            id="qr-image"
-            src=""
-            alt="QR Code"
-            class="w-full h-full object-contain"
-          />
-        </div>
-
-        <!-- Text Info -->
-        <h3 class="gold-text font-bold text-base mb-1 ...">My Contact</h3>
-        <!-- ថែម id="qr-link-text" ដើម្បីបង្ហាញ Link តាម ID -->
-        <p
-          id="qr-link-text"
-          class="text-white/50 text-[10px] mb-8 tracking-widest font-mono truncate px-4"
+        <div
+          id="modal-qr"
+          class="modal-hidden modal-transition fixed inset-0 z-50 bg-[#000000ea] flex items-center justify-center p-6 backdrop-blur-sm"
         >
-          https://...
-        </p>
+          <div
+            class="bg-[#0a0a0a] border border-[#cb9b51]/30 rounded-[30px] p-6 w-full max-w-[320px] flex flex-col items-center shadow-[0_0_50px_rgba(203,155,81,0.15)] relative transform transition-transform duration-300 scale-95 origin-center"
+          >
+            <!-- រូបភាព QR ដែលនឹងលោតតាម ID ស្វ័យប្រវត្តិ -->
+            <div
+              class="bg-black p-4 rounded-xl w-full aspect-square flex items-center justify-center mb-6 relative overflow-hidden"
+            >
+              <img
+                id="qr-image"
+                src=""
+                alt="QR Code"
+                class="w-full h-full object-contain"
+              />
+            </div>
+
+            <h3 class="gold-text font-bold text-base mb-1 font-sans">
+              My Contact
+            </h3>
+            <p
+              id="qr-link-text"
+              class="text-white/50 text-[10px] mb-8 tracking-widest font-mono truncate px-4 w-full text-center"
+            >
+              <!-- Link នឹងបង្ហាញនៅទីនេះ -->
+            </p>
+
+            <button
+              id="close-qr-btn"
+              class="w-full py-3 rounded-full gold-gradient text-black font-bold text-[11px] uppercase tracking-[0.2em] shadow-lg hover:scale-110 transition-transform cursor-pointer"
+            >
+              CLOSE
+            </button>
+          </div>
+        </div>
+        <div class="relative z-10 px-6 mb-6 flex justify-center">
+          <button
+            id="qr-btn"
+            class="flex flex-col items-center gap-2 group cursor-pointer hover:scale-110 transition-transform"
+          >
+            <div
+              class="p-3 rounded-2xl bg-white/5 border border-[#cb9b51]/30 group-hover:border-[#cb9b51] group-hover:shadow-[0_0_15px_rgba(203,155,81,0.2)] transition-all"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="w-8 h-8 text-[#cb9b51]"
+              >
+                <rect width="5" height="5" x="3" y="3" rx="1"></rect>
+                <rect width="5" height="5" x="16" y="3" rx="1"></rect>
+                <rect width="5" height="5" x="3" y="16" rx="1"></rect>
+                <path d="M21 16h-3a2 2 0 0 0-2 2v3"></path>
+                <path d="M21 21v.01"></path>
+                <path d="M12 7v3a2 2 0 0 1-2 2H7"></path>
+                <path d="M3 12h.01"></path>
+                <path d="M12 3h.01"></path>
+                <path d="M12 16v.01"></path>
+                <path d="M16 12h1"></path>
+                <path d="M21 12v.01"></path>
+                <path d="M12 21v-1"></path>
+              </svg>
+            </div>
+            <span
+              class="text-[10px] font-bold gold-text uppercase tracking-widest opacity-70"
+            >
+              Scan to Connect
+            </span>
+          </button>
+        </div>
 
         <!-- Footer -->
         <div
@@ -733,7 +792,7 @@
             Rumduol Premium
           </p>
           <p class="text-[10px] font-sans gold-text opacity-40 tracking-widest">
-            (Credit By Farors)
+            Powerd By Farors
           </p>
           <div class="flex items-center gap-1 mt-1">
             <div class="w-1 h-1 rounded-full bg-[#cb9b51] opacity-50"></div>
@@ -747,6 +806,9 @@
     <!-- ======================= -->
     <!-- QR CODE MODAL -->
     <!-- ======================= -->
+    <!-- ១. ប៊ូតុង QR (ដាក់នៅខាងក្រោម Social Links) -->
+
+    <!-- ២. Modal QR (កែសម្រួល ID ឱ្យត្រូវតាម Script) -->
     <div
       id="modal-qr"
       class="modal-hidden modal-transition fixed inset-0 z-50 bg-[#000000ea] flex items-center justify-center p-6 backdrop-blur-sm"
@@ -754,43 +816,26 @@
       <div
         class="bg-[#0a0a0a] border border-[#cb9b51]/30 rounded-[30px] p-6 w-full max-w-[320px] flex flex-col items-center shadow-[0_0_50px_rgba(203,155,81,0.15)] relative transform transition-transform duration-300 scale-95 origin-center"
       >
-        <!-- Box Glow -->
-        <div
-          class="absolute -inset-1 rounded-[32px] bg-gradient-to-r from-[#cb9b51]/0 via-[#cb9b51]/20 to-[#cb9b51]/0 opacity-50 blur-xl pointer-events-none"
-        ></div>
-
-        <!-- QR Image Container -->
         <div
           class="bg-black p-4 rounded-xl w-full aspect-square flex items-center justify-center mb-6 relative overflow-hidden"
         >
-          <!-- Generates real QR pointing to website -->
+          <!-- ថែម id="qr-image" ត្រង់នេះ -->
           <img
-            src="./image/QR.png"
+            id="qr-image"
+            src=""
             alt="QR Code"
             class="w-full h-full object-contain"
           />
-          <!-- Center image overlay in QR (like reference) -->
-          <!-- <div
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white p-1 rounded-md shadow-md"
-          >
-            <img
-              src="./image/profile.png"
-              class="w-full h-full object-cover rounded-sm"
-              alt="logo"
-            />
-          </div> -->
         </div>
-
-        <!-- Text Info -->
-        <h3 class="gold-text font-bold text-base mb-1 drop-shadow-sm font-sans">
-          My Contact
-        </h3>
-        <p class="text-white/50 text-[10px] mb-8 tracking-widest font-mono"></p>
-
-        <!-- Close Button -->
+        <h3 class="gold-text font-bold text-base mb-1 font-sans">My Contact</h3>
+        <!-- ថែម id="qr-link-text" ត្រង់នេះ -->
+        <p
+          id="qr-link-text"
+          class="text-white/50 text-[10px] mb-8 tracking-widest font-mono text-center break-all px-4"
+        ></p>
         <button
           id="close-qr-btn"
-          class="w-full py-3 rounded-full gold-gradient text-black font-bold text-[11px] uppercase tracking-[0.2em] shadow-lg hover:scale-110 transition-transform brightness-110 transition-all cursor-pointer"
+          class="w-full py-3 rounded-full gold-gradient text-black font-bold text-[11px] uppercase tracking-[0.2em] shadow-lg hover:scale-110 transition-transform"
         >
           CLOSE
         </button>
@@ -844,6 +889,7 @@
           Share Card
         </button>
         <a
+          href="https://t.me/farors07"
           target="_blank"
           class="text-3xl font-sans font-bold text-white hover:text-[#cb9b51] transition-colors tracking-wide hover:scale-110 transition-transform"
           >Contact Us</a
@@ -1094,63 +1140,66 @@
     <!-- ======================= -->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        // ១. កំណត់ Link និងទាញ ID ពី URL
         const sheetURL =
           "https://docs.google.com/spreadsheets/d/e/2PACX-1vT5EqCFA0-fKAtQgN2kWBwsAe7poKKJsH1NkVsHuVXsbouXtwZVGAdsbOkPU9qhmtyGMMJR-z0mDTe1/pub?gid=0&single=true&output=csv";
         const urlParams = new URLSearchParams(window.location.search);
         const userId = urlParams.get("id");
 
-        if (!userId) {
-          alert("សូមប្រើប្រាស់ Link ដែលមាន ID (ឧទាហរណ៍: index.html?id=1)");
-          return;
-        }
+        // if (!userId) {
+        //   alert("សូមប្រើប្រាស់ Link ដែលមាន ID (ឧទាហរណ៍: ?id=1)");
+        //   return;
+        // }
 
-        // ២. មុខងារជំនួយ (Helper Functions)
-        const showModal = (el) => {
+        // មុខងារជំនួយសម្រាប់លាក់/បង្ហាញប៊ូតុង
+        const updateUI = (id, value, prefix = "", isImage = false) => {
+          const el = document.getElementById(id);
           if (!el) return;
-          el.classList.remove("modal-hidden");
-          el.classList.add("modal-visible");
-          if (el.id === "modal-qr") {
+          const cleanValue = value ? value.trim() : "";
+          if (cleanValue !== "" && cleanValue !== "undefined") {
+            if (isImage) el.src = cleanValue;
+            else el.href = prefix + cleanValue;
+            el.style.display = id.includes("link-") ? "flex" : "block";
+          } else {
+            el.style.display = "none";
+          }
+        };
+
+        // មុខងារ បើក/បិទ Modal
+        const toggleModal = (id, show) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          if (show) {
+            el.classList.replace("modal-hidden", "modal-visible");
+            if (id === "modal-qr")
+              setTimeout(
+                () =>
+                  el
+                    .querySelector("div")
+                    ?.classList.replace("scale-95", "scale-100"),
+                10,
+              );
+          } else {
+            if (id === "modal-qr")
+              el.querySelector("div")?.classList.replace(
+                "scale-100",
+                "scale-95",
+              );
             setTimeout(
-              () =>
-                el
-                  .querySelector("div")
-                  ?.classList.replace("scale-95", "scale-100"),
-              10,
+              () => el.classList.replace("modal-visible", "modal-hidden"),
+              150,
             );
           }
         };
 
-        const hideModal = (el) => {
-          if (!el) return;
-          if (el.id === "modal-qr")
-            el.querySelector("div")?.classList.replace("scale-100", "scale-95");
-          setTimeout(
-            () => el.classList.replace("modal-visible", "modal-hidden"),
-            150,
-          );
-        };
-
-        // មុខងារសម្រាប់ Update Link និង "លាក់" ប៊ូតុងដែលទំនេរ
-        const updateLink = (id, value, prefix = "") => {
-          const el = document.getElementById(id);
-          if (!el) return;
-          if (value && value.trim() !== "" && value !== "undefined") {
-            el.href = prefix + value;
-            el.style.display = "flex"; // បង្ហាញប៊ូតុង
-          } else {
-            el.style.display = "none"; // លាក់ប៊ូតុងចោល
-          }
-        };
-
-        // ៣. ទាញទិន្នន័យពី Google Sheets
         fetch(sheetURL)
           .then((res) => res.text())
           .then((csvText) => {
             const rows = csvText
-              .split("\n")
+              .split(/\r?\n/)
               .map((row) =>
-                row.split(",").map((cell) => cell.trim().replace(/"/g, "")),
+                row
+                  .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
+                  .map((c) => c.trim().replace(/^"|"$/g, "")),
               );
             const headers = rows[0];
             const data = rows.slice(1).map((row) => {
@@ -1162,122 +1211,76 @@
             const user = data.find((u) => u.id === userId);
 
             if (user) {
-              // --- បញ្ចូលព័ត៌មានរូបភាព និងអត្ថបទ ---
-              if (document.getElementById("user-name"))
-                document.getElementById("user-name").innerText =
-                  user.name || "";
-              if (document.getElementById("user-title"))
-                document.getElementById("user-title").innerText =
-                  user.title || "";
+              // បញ្ចូលព័ត៌មានមូលដ្ឋាន
+              document.getElementById("user-name").innerText = user.name || "";
+              document.getElementById("user-title").innerText =
+                user.title || "";
+              updateUI("user-img", user.profile_img, "", true);
 
-              if (document.getElementById("user-img")) {
-                const img = document.getElementById("user-img");
-                img.src = user.profile_img || "./image/profile.png";
-                img.style.display = user.profile_img ? "block" : "none";
-              }
-
-              if (document.getElementById("company-logo")) {
-                const logo = document.getElementById("company-logo");
-                logo.src = user.logo_img || "./image/logo.png";
+              const logo = document.getElementById("company-logo");
+              if (logo) {
+                logo.src = user.logo_img || "";
                 logo.parentElement.style.display = user.logo_img
                   ? "block"
                   : "none";
               }
 
-              // --- បញ្ចូល Links និងឆែកមើលភាពទំនេរ (Auto-Hide) ---
-              updateLink("link-phone", user.phone, "tel:");
-              updateLink("link-fb", user.facebook);
-              updateLink("link-tg", user.telegram);
-              updateLink("link-linkin", user.linkedin);
-              updateLink("link-wa", user.whatsapp, "https://wa.me/");
-              updateLink("link-email", user.email, "mailto:");
-              updateLink("link-tiktok", user.tiktok);
-              updateLink("link-web", user.website);
+              // បញ្ចូលប៊ូតុង Social (លាក់ស្វ័យប្រវត្តិបើទទេ)
+              updateUI("link-phone", user.phone, "tel:");
+              updateUI("link-fb", user.facebook);
+              updateUI("link-tg", user.telegram);
+              updateUI("link-wa", user.whatsapp, "https://wa.me/");
+              updateUI("link-email", user.email, "mailto:");
+              updateUI("link-tiktok", user.tiktok);
+              updateUI("link-web", user.website);
+              updateUI("link-linkin", user.linkedin);
 
-              // បង្ហាញលេខទូរស័ព្ទលើអេក្រង់ (បើមាន id="display-phone")
-              if (document.getElementById("display-phone")) {
-                document.getElementById("display-phone").innerText =
-                  user.phone || "";
-              }
-
-              // --- បង្កើត QR Code ឌីណាមិកតាម Link បច្ចុប្បន្ន ---
+              // បង្កើត QR Code តាម Link បច្ចុប្បន្ន
               const currentUrl = window.location.href;
-              const qrImgEl = document.getElementById("qr-image");
-              const qrTextEl = document.getElementById("qr-link-text");
-              if (qrImgEl)
-                qrImgEl.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(currentUrl)}`;
-              if (qrTextEl) qrTextEl.innerText = currentUrl;
+              document.getElementById("qr-image").src =
+                `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(currentUrl)}`;
+              document.getElementById("qr-link-text").innerText = currentUrl;
 
-              // --- មុខងារ Share ---
-              document.getElementById("nav-share").onclick = async () => {
-                hideModal(document.getElementById("modal-menu"));
-                if (navigator.share) {
-                  try {
-                    await navigator.share({
-                      title: `${user.name} - Digital Card`,
-                      text: `Connect with ${user.name}`,
-                      url: currentUrl,
-                    });
-                  } catch (e) {
-                    console.log(e);
-                  }
-                } else {
-                  navigator.clipboard.writeText(currentUrl);
-                  alert("Link Copied to clipboard!");
-                }
-              };
-
-              // --- មុខងារ Save Contact (.vcf) ---
+              // Save Contact
               document.getElementById("save-contact-btn").onclick = () => {
-                const vcf = `BEGIN:VCARD\nVERSION:3.0\nN:${user.vcf_last || ""};${user.vcf_first || ""};\nFN:${user.name}\nORG:${user.vcf_org || ""}\nTITLE:${user.title}\nTEL;TYPE=CELL:${user.phone}\nURL:${currentUrl}\nEND:VCARD`;
-                const blob = new Blob([vcf], {
-                  type: "text/vcard;charset=utf-8",
-                });
-                const url = window.URL.createObjectURL(blob);
+                const vcf = `BEGIN:VCARD\nVERSION:3.0\nFN:${user.name}\nTITLE:${user.title}\nTEL;TYPE=CELL:${user.phone}\nURL:${currentUrl}\nEND:VCARD`;
+                const blob = new Blob([vcf], { type: "text/vcard" });
                 const a = document.createElement("a");
-                a.href = url;
+                a.href = URL.createObjectURL(blob);
                 a.download = `${user.vcf_first || "Contact"}.vcf`;
                 a.click();
-                window.URL.revokeObjectURL(url);
+              };
+
+              // Share Card
+              document.getElementById("nav-share").onclick = async () => {
+                toggleModal("modal-menu", false);
+                if (navigator.share)
+                  await navigator.share({ title: user.name, url: currentUrl });
+                else {
+                  navigator.clipboard.writeText(currentUrl);
+                  alert("Link Copied!");
+                }
               };
             }
-          })
-          .catch((err) => console.error("Error fetching data:", err));
+          });
 
-        // --- មុខងារ Modal Events (Menu, QR, About) ---
-        const modalIds = {
-          menu: "modal-menu",
-          qr: "modal-qr",
-          about: "page-about",
-        };
-
+        // បញ្ជាប៊ូតុង Modal
         document.getElementById("menu-btn").onclick = () =>
-          showModal(document.getElementById(modalIds.menu));
+          toggleModal("modal-menu", true);
         document.getElementById("close-menu-btn").onclick = () =>
-          hideModal(document.getElementById(modalIds.menu));
-
+          toggleModal("modal-menu", false);
         document.getElementById("qr-btn").onclick = () =>
-          showModal(document.getElementById(modalIds.qr));
+          toggleModal("modal-qr", true);
         document.getElementById("close-qr-btn").onclick = () =>
-          hideModal(document.getElementById(modalIds.qr));
-
-        document.getElementById("nav-home").onclick = () => {
-          hideModal(document.getElementById(modalIds.menu));
-          hideModal(document.getElementById(modalIds.about));
-        };
-
+          toggleModal("modal-qr", false);
         document.getElementById("nav-about").onclick = () => {
-          hideModal(document.getElementById(modalIds.menu));
-          showModal(document.getElementById(modalIds.about));
+          toggleModal("modal-menu", false);
+          toggleModal("page-about", true);
         };
-
         document.getElementById("close-about-btn").onclick = () =>
-          hideModal(document.getElementById(modalIds.about));
-
-        // ចុចខាងក្រៅ Modal ដើម្បីបិទ (សម្រាប់ QR)
-        document.getElementById(modalIds.qr).onclick = (e) => {
-          if (e.target.id === modalIds.qr)
-            hideModal(document.getElementById(modalIds.qr));
+          toggleModal("page-about", false);
+        document.getElementById("modal-qr").onclick = (e) => {
+          if (e.target.id === "modal-qr") toggleModal("modal-qr", false);
         };
       });
     </script>
